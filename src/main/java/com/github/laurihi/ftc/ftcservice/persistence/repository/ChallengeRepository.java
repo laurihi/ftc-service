@@ -1,6 +1,6 @@
-package com.github.laurihi.ftc.ftcservice.repository;
+package com.github.laurihi.ftc.ftcservice.persistence.repository;
 
-import com.github.laurihi.ftc.ftcservice.model.challenge.Challenge;
+import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
