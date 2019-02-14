@@ -1,14 +1,10 @@
 package com.github.laurihi.ftc.ftcservice.persistence.data;
 
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Challenge {
@@ -19,10 +15,12 @@ public class Challenge {
     private Long id;
     private String name;
 
-    @Fetch(FetchMode.JOIN)
     private LocalDate launchDate;
-    @Fetch(FetchMode.JOIN)
     private LocalDate endDate;
+
+
+    @OneToMany(targetEntity=RatedExercise.class, fetch=FetchType.EAGER)
+    private List<RatedExercise> exercises = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -54,5 +52,13 @@ public class Challenge {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public List<RatedExercise> getExercises() {
+        return exercises;
+    }
+
+    public void setExercises(List<RatedExercise> exercises) {
+        this.exercises = exercises;
     }
 }

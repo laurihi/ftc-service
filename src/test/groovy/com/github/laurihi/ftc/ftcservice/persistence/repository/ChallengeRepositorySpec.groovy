@@ -1,6 +1,8 @@
 package com.github.laurihi.ftc.ftcservice.persistence.repository
 
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge
+import com.github.laurihi.ftc.ftcservice.persistence.data.RatedExercise
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Profile
@@ -66,11 +68,91 @@ class ChallengeRepositorySpec extends Specification {
 
         where:
         amountOfChallenges | _
-        1                   | _
-        4                   | _
-        7                   | _
-        21                  | _
+        1                  | _
+        4                  | _
+        7                  | _
+        21                 | _
     }
+
+    @Unroll
+    @Transactional
+    def "Rated exercises #exerciseName is saved and fetched as a part of challenge"() {
+
+        when: "challenge initialised and exercises added"
+        def challenge = createChallenge(challengeName)
+        def exercise = createRatedExercise(exerciseName)
+        challenge.exercises << exercise
+
+        then: "Challenge saved and fetched from the repo by id"
+        def saved = challengeRepository.save(challenge)
+        def challengeId = saved.id
+        def fromRepo = challengeRepository.getOne(challengeId)
+
+        expect: "challenge fetched from repo to contain the exercise"
+        fromRepo.exercises.size() == 1
+        def ratedExercise = fromRepo.exercises.get(0)
+        ratedExercise.exerciseKey == exerciseName
+
+        where:
+        challengeName               | exerciseName
+        "Ultimate challenge"        | "Exercise name"
+        "More ultimater challenge"  | "Another exercise"
+        "Most ultimatest challenge" | "Exercise name"
+    }
+
+
+    @Unroll
+    @Transactional
+    def "Multiple rated exercises (#amountOfExercises) can be saved"() {
+
+        when: "challenge initialised and exercises added"
+        def challenge = createChallenge(challengeName)
+        amountOfExercises.times {
+            challenge.exercises << createRatedExercise("Exercise " + it)
+        }
+
+        then: "Challenge saved and fetched from the repo by id"
+        def saved = challengeRepository.save(challenge)
+        def challengeId = saved.id
+        def fromRepo = challengeRepository.getOne(challengeId)
+
+        expect: "challenge fetched from repo to contain the exercise"
+        fromRepo.exercises.size() == amountOfExercises
+
+        where:
+        challengeName               | amountOfExercises
+        "Ultimate challenge"        | 1
+        "More ultimater challenge"  | 7
+        "Most ultimatest challenge" | 21
+    }
+
+
+    @Unroll
+    @Transactional
+    def "Rated exercises fields are persisted correctly"() {
+
+        when: "challenge initialised and exercises added"
+        def challenge = createChallenge(challengeName)
+        def ratedExercise = createRatedExercise("exercise")
+        ratedExercise.pointsPerUnit = 5
+        ratedExercise.unit = "km"
+        challenge.exercises << ratedExercise
+
+        then: "Challenge saved and fetched from the repo by id"
+        def saved = challengeRepository.save(challenge)
+        def challengeId = saved.id
+        def fromRepo = challengeRepository.getOne(challengeId)
+
+        expect: "Rated exercise contains the correct details"
+
+        fromRepo.exercises[0].unit == 'km'
+        fromRepo.exercises[0].pointsPerUnit == 5
+
+        where:
+        challengeName               | _
+        "Ultimate challenge"        | _
+    }
+
 
     def createChallenge(String name) {
         def start = LocalDate.now().plusDays(1)
@@ -81,5 +163,11 @@ class ChallengeRepositorySpec extends Specification {
         challenge.setLaunchDate(start)
         challenge.setEndDate(end)
         return challenge
+    }
+
+    def createRatedExercise(name) {
+        RatedExercise exercise = new RatedExercise()
+        exercise.exerciseKey = name
+        return exercise
     }
 }
