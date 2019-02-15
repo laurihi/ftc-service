@@ -1,6 +1,7 @@
 package com.github.laurihi.ftc.ftcservice.persistence.repository
 
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge
+import com.github.laurihi.ftc.ftcservice.persistence.data.Participant
 import com.github.laurihi.ftc.specification.FtcSpecification
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -152,6 +153,5 @@ class ChallengeRepositorySpec extends FtcSpecification {
         challengeName               | _
         "Ultimate challenge"        | _
     }
-
 
 }

@@ -1,6 +1,7 @@
 package com.github.laurihi.ftc.specification
 
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge
+import com.github.laurihi.ftc.ftcservice.persistence.data.Participant
 import com.github.laurihi.ftc.ftcservice.persistence.data.RatedExercise
 import groovy.transform.builder.Builder
 import groovy.transform.builder.ExternalStrategy
@@ -10,6 +11,9 @@ import java.time.LocalDate
 
 class FtcSpecification extends Specification {
 
+    @Builder(builderStrategy = ExternalStrategy, forClass = Participant)
+    class ParticipantBuilder {}
+
     @Builder(builderStrategy = ExternalStrategy, forClass = Challenge)
     class ChallengeBuilder {}
 
@@ -18,7 +22,7 @@ class FtcSpecification extends Specification {
 
     def challengeBuilder = new ChallengeBuilder()
     def ratedExerciseBuilder = new RatedExerciseBuilder()
-
+    def participantBuilder = new ParticipantBuilder()
 
     def createChallengeWithRatedExercise(String challengeName, String exerciseName){
 
