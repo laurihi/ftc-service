@@ -150,8 +150,33 @@ class ChallengeRepositorySpec extends FtcSpecification {
         fromRepo.exercises[0].pointsPerUnit == 5
 
         where:
-        challengeName               | _
-        "Ultimate challenge"        | _
+        challengeName        | _
+        "Ultimate challenge" | _
+    }
+
+    @Unroll
+    @Transactional
+    def "Challenge can have #numberOfParticipants participants"() {
+
+        when: "challenge initialised and #numberOfParticipants participants added"
+        def challenge = createChallenge("Challenge")
+        numberOfParticipants.times {
+            challenge.addParticipant(participantBuilder.userHandle("user-" + it).build())
+        }
+        then: "Challenge saved and fetched from the repo by id"
+        def saved = challengeRepository.save(challenge)
+        def challengeId = saved.id
+        def fromRepo = challengeRepository.getOne(challengeId)
+
+        expect: "Rated exercise contains the correct details"
+        fromRepo.participants.size() == numberOfParticipants
+
+        where:
+        numberOfParticipants | _
+        0                    | _
+        5                    | _
+        10                   | _
+
     }
 
 }

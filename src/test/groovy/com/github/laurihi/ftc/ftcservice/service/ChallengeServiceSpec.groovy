@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Profile
 import org.springframework.test.annotation.DirtiesContext
 import spock.lang.Unroll
 
+import javax.transaction.Transactional
 import java.time.LocalDate
 
 @SpringBootTest
@@ -60,6 +61,31 @@ class ChallengeServiceSpec extends FtcSpecification {
         def ongoingFromDb = challengeService.getOngoingChallenge()
         then:
         ongoingChallenge.id == ongoingFromDb.id
+    }
+
+    @Unroll
+    @Transactional
+    def "Participant can join an ongoing challenge"() {
+
+        given: "One ongoing challenge exists"
+        def ongoingChallenge = challenge
+        challengeService.saveChallenge(ongoingChallenge)
+        when:
+        challengeService.joinOngoing("usr-handle")
+        then:
+        challengeService.getOngoingChallenge().participants.size() == 1
+    }
+
+    @Unroll
+    @Transactional
+    def "Participant can not join if no ongoing challenge is available"() {
+
+        given: "No ongoing challenges"
+
+        when:
+        challengeService.joinOngoing("usr-handle")
+        then:
+        thrown IllegalStateException
     }
 
 
