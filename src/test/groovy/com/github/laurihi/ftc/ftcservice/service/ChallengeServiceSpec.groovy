@@ -115,12 +115,12 @@ class ChallengeServiceSpec extends FtcSpecification {
         3            | 7
     }
 
-    def "No challenges, ongoing challenge throws exception"() {
+    def "No challenges, returns null"() {
 
         when:
-        challengeService.getOngoingChallenge()
+        def result = challengeService.getOngoingChallenge()
         then:
-        thrown Exception
+        result == null
     }
 
 
