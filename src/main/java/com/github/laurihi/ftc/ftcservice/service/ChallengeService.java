@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ChallengeService {
@@ -41,6 +40,7 @@ public class ChallengeService {
     }
 
     private boolean doOverlappingChallengesExist(LocalDate start, LocalDate end) {
+
         List<Challenge> challengesThatEndBeforeCurrentStart = challengeRepository.findByEndDateBefore(start);
         List<Challenge> challengesThatStartAfterCurrentEnd = challengeRepository.findByLaunchAfter(end);
 
@@ -56,22 +56,37 @@ public class ChallengeService {
         return ongoing.size() == 0 ? null : ongoing.get(0);
     }
 
-    public void joinOngoing(String userHandle) {
+    public boolean hasJoined(String userHandle, Challenge challenge) {
+
+        return challenge.getParticipants().stream()
+                .anyMatch(participant -> participant.getUserHandle().equals(userHandle));
+    }
+
+    public Participant joinOngoing(String userHandle) {
 
         Challenge ongoingChallenge = getOngoingChallenge();
-        if (ongoingChallenge == null){
+
+        if (ongoingChallenge == null) {
             throw new IllegalStateException("No ongoing challenges to join.");
         }
-        Participant participant = participantRepository.findById(userHandle).orElse(addParticipant(userHandle));
 
+        Participant participant = participantRepository.findById(userHandle).orElse(addParticipant(userHandle));
         ongoingChallenge.addParticipant(participant);
         challengeRepository.save(ongoingChallenge);
 
+        return participant;
     }
 
     private Participant addParticipant(String userHandle) {
         Participant participant = new Participant();
         participant.setUserHandle(userHandle);
         return participantRepository.save(participant);
+    }
+
+
+    public Participant getParticipantByUserHandle(String userHandle, Challenge challenge) {
+        return challenge.getParticipants().stream()
+                .filter(participant -> participant.getUserHandle().equals(userHandle)).findFirst().orElseThrow(IllegalArgumentException::new);
+
     }
 }
