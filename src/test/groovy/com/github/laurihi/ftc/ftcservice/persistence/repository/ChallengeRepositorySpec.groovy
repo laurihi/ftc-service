@@ -36,7 +36,7 @@ class ChallengeRepositorySpec extends FtcSpecification {
 
         then: "Challenge saved and fetched from the repo by id"
         def saved = challengeRepository.save(challenge)
-        def challengeId = saved.id;
+        def challengeId = saved.id
         def fromRepo = challengeRepository.getOne(challengeId)
 
         expect: "challenge fetched from repo to equal saved"
