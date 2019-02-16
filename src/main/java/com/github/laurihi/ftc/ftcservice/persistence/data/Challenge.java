@@ -3,10 +3,7 @@ package com.github.laurihi.ftc.ftcservice.persistence.data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Challenge {
@@ -21,7 +18,7 @@ public class Challenge {
     private LocalDate endDate;
 
 
-    @OneToMany(targetEntity = RatedExercise.class, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = RatedExercise.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<RatedExercise> exercises = new ArrayList<>();
 
     @ManyToMany(cascade = {
@@ -78,5 +75,19 @@ public class Challenge {
 
     public void addParticipant(Participant participant){
         participants.add(participant);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Challenge challenge = (Challenge) o;
+        return Objects.equals(id, challenge.id);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
     }
 }
