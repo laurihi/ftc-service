@@ -30,7 +30,7 @@ class ChallengeRepositorySpec extends FtcSpecification {
         def start = LocalDate.now().plusDays(1)
         def end = LocalDate.now().plusDays(4)
 
-        challenge.setLaunchDate(start)
+        challenge.setStartDate(start)
         challenge.setEndDate(end)
 
         then: "Challenge saved and fetched from the repo by id"

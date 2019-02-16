@@ -1,5 +1,6 @@
 package com.github.laurihi.ftc.ftcservice.service;
 
+import com.github.laurihi.ftc.ftcservice.model.CreateChallengeModel;
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge;
 import com.github.laurihi.ftc.ftcservice.persistence.data.Participant;
 import com.github.laurihi.ftc.ftcservice.persistence.repository.ChallengeRepository;
@@ -26,23 +27,25 @@ public class ChallengeService {
         this.participantRepository = participantRepository;
     }
 
-    public Challenge saveChallenge(Challenge challenge) {
+    public Challenge create(CreateChallengeModel challenge) {
 
-        LocalDate launchDate = challenge.getLaunchDate();
-        LocalDate endDate = challenge.getEndDate();
+        Challenge challengeEntity = new Challenge();
+        challengeEntity.setName(challenge.getName());
+        challengeEntity.setStartDate(challenge.getStartDate());
+        challengeEntity.setEndDate(challenge.getEndDate());
 
-        if (doOverlappingChallengesExist(launchDate, endDate)) {
+
+        if (doOverlappingChallengesExist(challengeEntity.getStartDate(), challengeEntity.getEndDate())) {
             LOG.warn("Trying to create overlapping challenge by name " + challenge.getName());
             throw new RuntimeException();
         }
-
-        return challengeRepository.save(challenge);
+        return challengeRepository.save(challengeEntity);
     }
 
     private boolean doOverlappingChallengesExist(LocalDate start, LocalDate end) {
 
         List<Challenge> challengesThatEndBeforeCurrentStart = challengeRepository.findByEndDateBefore(start);
-        List<Challenge> challengesThatStartAfterCurrentEnd = challengeRepository.findByLaunchAfter(end);
+        List<Challenge> challengesThatStartAfterCurrentEnd = challengeRepository.findByStartAfter(end);
 
         List<Challenge> allChallenges = challengeRepository.findAll();
 
@@ -89,4 +92,5 @@ public class ChallengeService {
                 .filter(participant -> participant.getUserHandle().equals(userHandle)).findFirst().orElseThrow(IllegalArgumentException::new);
 
     }
+
 }

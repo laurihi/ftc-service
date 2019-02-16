@@ -14,7 +14,7 @@ public class Challenge {
     private Long id;
     private String name;
 
-    private LocalDate launchDate;
+    private LocalDate startDate;
     private LocalDate endDate;
 
 
@@ -45,12 +45,12 @@ public class Challenge {
         this.name = name;
     }
 
-    public LocalDate getLaunchDate() {
-        return launchDate;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setLaunchDate(LocalDate launchDate) {
-        this.launchDate = launchDate;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
     public LocalDate getEndDate() {

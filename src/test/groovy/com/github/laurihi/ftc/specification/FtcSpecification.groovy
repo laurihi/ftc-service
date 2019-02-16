@@ -1,5 +1,6 @@
 package com.github.laurihi.ftc.specification
 
+import com.github.laurihi.ftc.ftcservice.model.CreateChallengeModel
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge
 import com.github.laurihi.ftc.ftcservice.persistence.data.Participant
 import com.github.laurihi.ftc.ftcservice.persistence.data.RatedExercise
@@ -20,6 +21,9 @@ class FtcSpecification extends Specification {
     @Builder(builderStrategy = ExternalStrategy, forClass = Challenge)
     class ChallengeBuilder {}
 
+    @Builder(builderStrategy = ExternalStrategy, forClass = CreateChallengeModel)
+    class CreateChallengeBuilder {}
+
     @Builder(builderStrategy = ExternalStrategy, forClass = RatedExercise)
     class RatedExerciseBuilder {}
 
@@ -33,6 +37,7 @@ class FtcSpecification extends Specification {
     def ratedExerciseBuilder = new RatedExerciseBuilder()
     def participantBuilder = new ParticipantBuilder()
     def actionBuilder = new ActionBuilder()
+    def createChallengeBuilder = new CreateChallengeBuilder()
 
 
     def persistChallengeWithExerciseAndParticipant(String challengeName, String exerciseName, String userHandle){
@@ -60,7 +65,7 @@ class FtcSpecification extends Specification {
 
         Challenge challenge = new Challenge()
         challenge.setName(name)
-        challenge.setLaunchDate(start)
+        challenge.setStartDate(start)
         challenge.setEndDate(end)
         return challenge
     }

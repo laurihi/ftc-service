@@ -21,8 +21,8 @@ class ChallengeServiceSpec extends FtcSpecification {
     def challenge
 
     void setup() {
-        challenge = challengeBuilder.name("Challenge")
-                .launchDate(LocalDate.now().minusDays(1))
+        challenge = createChallengeBuilder.name("Challenge")
+                .startDate(LocalDate.now().minusDays(1))
                 .endDate(LocalDate.now().plusDays(5)).build()
     }
 
@@ -31,7 +31,7 @@ class ChallengeServiceSpec extends FtcSpecification {
 
         given: "Challenge with today between launchdate and enddate saved"
 
-        def challengeId = challengeService.saveChallenge(challenge).id
+        def challengeId = challengeService.create(challenge).id
         when:
         def ongoingChallenge = challengeService.getOngoingChallenge()
         then:
@@ -44,19 +44,19 @@ class ChallengeServiceSpec extends FtcSpecification {
 
         given: "Challenges saved as in the past, ongoing and future"
         def today = LocalDate.now()
-        def pastChallenge = challengeBuilder.launchDate(today.minusMonths(5))
+        def pastChallenge = createChallengeBuilder.startDate(today.minusMonths(5))
                 .endDate(today.minusMonths(2))
                 .name("Past challenge").build()
 
-        def futureChallenge = challengeBuilder.launchDate(today.plusMonths(5))
+        def futureChallenge = createChallengeBuilder.startDate(today.plusMonths(5))
                 .endDate(today.plusMonths(8))
                 .name("Past challenge").build()
 
         def ongoingChallenge = challenge
 
-        challengeService.saveChallenge(pastChallenge)
-        challengeService.saveChallenge(futureChallenge)
-        ongoingChallenge = challengeService.saveChallenge(ongoingChallenge)
+        challengeService.create(pastChallenge)
+        challengeService.create(futureChallenge)
+        ongoingChallenge = challengeService.create(ongoingChallenge)
         when:
         def ongoingFromDb = challengeService.getOngoingChallenge()
         then:
@@ -69,7 +69,7 @@ class ChallengeServiceSpec extends FtcSpecification {
 
         given: "One ongoing challenge exists"
         def ongoingChallenge = challenge
-        challengeService.saveChallenge(ongoingChallenge)
+        challengeService.create(ongoingChallenge)
         when:
         challengeService.joinOngoing("usr-handle")
         then:
@@ -94,17 +94,17 @@ class ChallengeServiceSpec extends FtcSpecification {
 
         given: "Challenges saved as in the past, ongoing and future"
         def today = LocalDate.now()
-        def challenge = challengeBuilder.launchDate(today.plusMonths(2))
+        def challenge = createChallengeBuilder.startDate(today.plusMonths(2))
                 .endDate(today.plusMonths(5))
                 .name("name").build()
-        challengeService.saveChallenge(challenge)
+        challengeService.create(challenge)
 
-        def overLappingChallenge = challengeBuilder.launchDate(today.plusMonths(launchOffset))
+        def overLappingChallenge = createChallengeBuilder.startDate(today.plusMonths(launchOffset))
                 .endDate(today.plusMonths(endOffset))
                 .name("Overlapper").build()
 
         when:
-        challengeService.saveChallenge(overLappingChallenge)
+        challengeService.create(overLappingChallenge)
         then:
         thrown Exception
         where:

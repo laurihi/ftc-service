@@ -1,14 +1,12 @@
 package com.github.laurihi.ftc.ftcservice.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.time.LocalDate;
 import java.util.List;
 
 public class CreateChallengeModel {
 
     private String name;
-    @JsonFormat()
+
     private LocalDate startDate;
     private LocalDate endDate;
     private List<String> exercises;
