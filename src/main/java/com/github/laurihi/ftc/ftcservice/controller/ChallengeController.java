@@ -31,6 +31,7 @@ public class ChallengeController {
         return challengeService.create(challenge);
     }
 
+    @CrossOrigin
     @ApiOperation("Get ongoing challenge")
     @GetMapping("/ongoing")
     public ChallengeBase ongoingChallenge(){
