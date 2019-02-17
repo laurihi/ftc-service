@@ -104,7 +104,7 @@ public class ChallengeService {
             availableExercise.setExerciseKey(ratedExercise.getExerciseKey());
             availableExercise.setPointsPerUnit(ratedExercise.getPointsPerUnit());
             availableExercise.setUnit(ratedExercise.getUnit());
-            availableExercise.setCategory("category-"+ratedExercise.getCategory().toString().toLowerCase());
+            availableExercise.setCategory(ratedExercise.getCategory().toString().toLowerCase());
             return availableExercise;
         }).collect(Collectors.toList());
     }

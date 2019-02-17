@@ -10,6 +10,7 @@ public class DailyActionsWrapper {
     private LocalDate date;
     private List<DailyAction> dailyActions = new ArrayList<>();
 
+    public DailyActionsWrapper(){}
     public DailyActionsWrapper(String userHandle, LocalDate date, List<DailyAction> dailyActions){
         this.userHandle = userHandle;
         this.date = date;

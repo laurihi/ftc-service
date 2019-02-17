@@ -1,9 +1,12 @@
 package com.github.laurihi.ftc.ftcservice.model.actions;
 
+import java.time.LocalDate;
+
 public class DailyAction {
 
     private String exercise;
-    private Long amountOf;
+    private Long units;
+
 
     public String getExercise() {
         return exercise;
@@ -13,11 +16,12 @@ public class DailyAction {
         this.exercise = exercise;
     }
 
-    public Long getAmountOf() {
-        return amountOf;
+    public Long getUnits() {
+        return units;
     }
 
-    public void setAmountOf(Long amountOf) {
-        this.amountOf = amountOf;
+    public void setUnits(Long units) {
+        this.units = units;
     }
+
 }

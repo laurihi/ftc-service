@@ -28,15 +28,14 @@ class ActionServiceSpec extends FtcSpecification {
     }
 
 
-    def "When adding actions, you call "() {
+    def "Adding actions saves actions to ongoing challenge "() {
 
         given:
-
 
         def actions = []
         def dailyAction = new DailyAction()
         dailyAction.exercise = exercise
-        dailyAction.amountOf = amountOf
+        dailyAction.units = units
         actions << dailyAction
 
         def dailyActionsWrapper = new DailyActionsWrapper(
@@ -55,7 +54,7 @@ class ActionServiceSpec extends FtcSpecification {
         1 * actionRepository.saveAll(_)
 
         where:
-        exercise   | amountOf | userHandle | date
+        exercise   | units | userHandle | date
         "exercise" | 2        | "donaldt"  | LocalDate.now()
     }
 

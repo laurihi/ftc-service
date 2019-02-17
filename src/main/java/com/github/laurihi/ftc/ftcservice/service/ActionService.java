@@ -28,11 +28,9 @@ public class ActionService {
 
     public void addDailyActions(DailyActionsWrapper dailyActionsWrapper) {
 
-
         Challenge ongoingChallenge = challengeService.getOngoingChallengeEntity();
         List<Action> actions = mapToActions(dailyActionsWrapper, ongoingChallenge);
         actionRepository.saveAll(actions);
-
 
     }
 
@@ -55,7 +53,7 @@ public class ActionService {
                 .map(dailyAction -> {
                     Action entry = new Action();
                     entry.setActionDate(dailyActionsWrapper.getDate());
-                    entry.setAmountDone(dailyAction.getAmountOf());
+                    entry.setAmountDone(dailyAction.getUnits());
                     entry.setExercise(ratedExerciseMap.get(dailyAction.getExercise()));
                     entry.setChallenge(challenge);
                     entry.setParticipant(participant);
