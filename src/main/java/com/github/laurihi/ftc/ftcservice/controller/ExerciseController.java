@@ -1,6 +1,7 @@
 package com.github.laurihi.ftc.ftcservice.controller;
 
 import com.github.laurihi.ftc.ftcservice.model.actions.AvailableExercise;
+import com.github.laurihi.ftc.ftcservice.model.actions.AvailableExercises;
 import com.github.laurihi.ftc.ftcservice.service.ChallengeService;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -27,7 +28,10 @@ public class ExerciseController {
 
     @ApiOperation("Get exercises available for actions")
     @GetMapping("/available")
-    public List<AvailableExercise> getAvailableExercises(){
-        return challengeService.availableExercises();
+    public AvailableExercises getAvailableExercises(){
+        List<AvailableExercise> availableExercises = challengeService.availableExercises();
+        AvailableExercises result = new AvailableExercises();
+        result.addAvailableExercises(availableExercises);
+        return result;
     }
 }

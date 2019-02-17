@@ -2,6 +2,7 @@ package com.github.laurihi.ftc.specification
 
 import com.github.laurihi.ftc.ftcservice.model.challenge.CreateChallenge
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge
+import com.github.laurihi.ftc.ftcservice.persistence.data.ExerciseCategory
 import com.github.laurihi.ftc.ftcservice.persistence.data.Participant
 import com.github.laurihi.ftc.ftcservice.persistence.data.RatedExercise
 import com.github.laurihi.ftc.ftcservice.persistence.data.actions.Action
@@ -73,6 +74,7 @@ class FtcSpecification extends Specification {
     def createRatedExercise(String name) {
         RatedExercise exercise = new RatedExercise()
         exercise.exerciseKey = name
+        exercise.category = ExerciseCategory.COMMUTING
         return exercise
     }
 }

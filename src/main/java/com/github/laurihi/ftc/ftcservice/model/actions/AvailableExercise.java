@@ -5,6 +5,7 @@ public class AvailableExercise {
     private String exerciseKey;
     private Integer pointsPerUnit;
     private String unit;
+    private String category;
 
     public String getExerciseKey() {
         return exerciseKey;
@@ -28,5 +29,13 @@ public class AvailableExercise {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

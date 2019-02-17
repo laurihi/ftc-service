@@ -5,6 +5,7 @@ import com.github.laurihi.ftc.ftcservice.model.challenge.ChallengeBase;
 import com.github.laurihi.ftc.ftcservice.model.challenge.CreateChallenge;
 import com.github.laurihi.ftc.ftcservice.model.challenge.CreateRatedExercise;
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge;
+import com.github.laurihi.ftc.ftcservice.persistence.data.ExerciseCategory;
 import com.github.laurihi.ftc.ftcservice.persistence.data.Participant;
 import com.github.laurihi.ftc.ftcservice.persistence.data.RatedExercise;
 import com.github.laurihi.ftc.ftcservice.persistence.repository.ChallengeRepository;
@@ -103,6 +104,7 @@ public class ChallengeService {
             availableExercise.setExerciseKey(ratedExercise.getExerciseKey());
             availableExercise.setPointsPerUnit(ratedExercise.getPointsPerUnit());
             availableExercise.setUnit(ratedExercise.getUnit());
+            availableExercise.setCategory("category-"+ratedExercise.getCategory().toString().toLowerCase());
             return availableExercise;
         }).collect(Collectors.toList());
     }
@@ -119,10 +121,12 @@ public class ChallengeService {
 
     private List<RatedExercise> mapToRatedExercises(List<CreateRatedExercise> exercises) {
         return exercises.stream().map(exercise -> {
+
             RatedExercise result = new RatedExercise();
             result.setExerciseKey(exercise.getExerciseKey());
             result.setPointsPerUnit(exercise.getPointsPerUnit());
             result.setUnit(exercise.getUnit());
+            result.setCategory(exercise.getCategory());
             return result;
         }).collect(Collectors.toList());
     }

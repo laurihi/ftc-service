@@ -18,6 +18,8 @@ public class RatedExercise {
 
     private Integer pointsPerUnit;
 
+    private ExerciseCategory category;
+
     public Long getId() {
         return id;
     }
@@ -48,5 +50,13 @@ public class RatedExercise {
 
     public void setPointsPerUnit(Integer pointsPerUnit) {
         this.pointsPerUnit = pointsPerUnit;
+    }
+
+    public ExerciseCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(ExerciseCategory category) {
+        this.category = category;
     }
 }
