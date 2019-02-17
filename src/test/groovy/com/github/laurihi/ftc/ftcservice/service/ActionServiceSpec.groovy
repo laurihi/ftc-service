@@ -51,7 +51,7 @@ class ActionServiceSpec extends FtcSpecification {
         actionService.addDailyActions(dailyActionsWrapper)
 
         then: "challengeservices get ongoing must be called at least once"
-        1 * challengeService.getOngoingChallenge() >> challenge
+        1 * challengeService.getOngoingChallengeEntity() >> challenge
         1 * actionRepository.saveAll(_)
 
         where:

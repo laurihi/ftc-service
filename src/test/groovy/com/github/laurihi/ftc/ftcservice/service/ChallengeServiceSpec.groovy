@@ -34,7 +34,7 @@ class ChallengeServiceSpec extends FtcSpecification {
 
         def challengeId = challengeService.create(challenge).id
         when:
-        def ongoingChallenge = challengeService.getOngoingChallenge()
+        def ongoingChallenge = challengeService.getOngoingChallengeEntity()
         then:
         ongoingChallenge.id == challengeId
 
@@ -59,7 +59,7 @@ class ChallengeServiceSpec extends FtcSpecification {
         challengeService.create(futureChallenge)
         ongoingChallenge = challengeService.create(ongoingChallenge)
         when:
-        def ongoingFromDb = challengeService.getOngoingChallenge()
+        def ongoingFromDb = challengeService.getOngoingChallengeEntity()
         then:
         ongoingChallenge.id == ongoingFromDb.id
     }
@@ -74,7 +74,7 @@ class ChallengeServiceSpec extends FtcSpecification {
         when:
         challengeService.joinOngoing("usr-handle")
         then:
-        challengeService.getOngoingChallenge().participants.size() == 1
+        challengeService.getOngoingChallengeEntity().participants.size() == 1
     }
 
     @Unroll
@@ -119,7 +119,7 @@ class ChallengeServiceSpec extends FtcSpecification {
     def "No challenges, returns null"() {
 
         when:
-        def result = challengeService.getOngoingChallenge()
+        def result = challengeService.getOngoingChallengeEntity()
         then:
         result == null
     }
