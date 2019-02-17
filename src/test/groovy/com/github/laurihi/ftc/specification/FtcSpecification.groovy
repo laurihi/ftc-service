@@ -1,6 +1,6 @@
 package com.github.laurihi.ftc.specification
 
-import com.github.laurihi.ftc.ftcservice.model.CreateChallengeModel
+import com.github.laurihi.ftc.ftcservice.model.challenge.CreateChallenge
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge
 import com.github.laurihi.ftc.ftcservice.persistence.data.Participant
 import com.github.laurihi.ftc.ftcservice.persistence.data.RatedExercise
@@ -21,7 +21,7 @@ class FtcSpecification extends Specification {
     @Builder(builderStrategy = ExternalStrategy, forClass = Challenge)
     class ChallengeBuilder {}
 
-    @Builder(builderStrategy = ExternalStrategy, forClass = CreateChallengeModel)
+    @Builder(builderStrategy = ExternalStrategy, forClass = CreateChallenge)
     class CreateChallengeBuilder {}
 
     @Builder(builderStrategy = ExternalStrategy, forClass = RatedExercise)

@@ -1,4 +1,4 @@
-package com.github.laurihi.ftc.ftcservice.model;
+package com.github.laurihi.ftc.ftcservice.model.actions;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

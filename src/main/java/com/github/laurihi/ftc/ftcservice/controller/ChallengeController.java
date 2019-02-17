@@ -1,6 +1,6 @@
 package com.github.laurihi.ftc.ftcservice.controller;
 
-import com.github.laurihi.ftc.ftcservice.model.CreateChallengeModel;
+import com.github.laurihi.ftc.ftcservice.model.challenge.CreateChallenge;
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge;
 import com.github.laurihi.ftc.ftcservice.service.ChallengeService;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +28,7 @@ public class ChallengeController {
 
     @ApiOperation("Create new challenge")
     @PostMapping
-    public Challenge createChallenge(@RequestBody CreateChallengeModel challenge){
+    public Challenge createChallenge(@RequestBody CreateChallenge challenge){
 
         return challengeService.create(challenge);
     }

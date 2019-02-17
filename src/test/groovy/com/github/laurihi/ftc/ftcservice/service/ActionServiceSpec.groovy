@@ -1,14 +1,12 @@
 package com.github.laurihi.ftc.ftcservice.service
 
-import com.github.laurihi.ftc.ftcservice.model.DailyAction
-import com.github.laurihi.ftc.ftcservice.model.DailyActionsWrapper
+import com.github.laurihi.ftc.ftcservice.model.actions.DailyAction
+import com.github.laurihi.ftc.ftcservice.model.actions.DailyActionsWrapper
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge
-import com.github.laurihi.ftc.ftcservice.persistence.data.RatedExercise
 import com.github.laurihi.ftc.ftcservice.persistence.repository.ActionRepository
 import com.github.laurihi.ftc.ftcservice.persistence.repository.ChallengeRepository
 import com.github.laurihi.ftc.ftcservice.persistence.repository.ParticipantRepository
 import com.github.laurihi.ftc.specification.FtcSpecification
-import spock.lang.Specification
 import spock.lang.Subject
 
 import java.time.LocalDate

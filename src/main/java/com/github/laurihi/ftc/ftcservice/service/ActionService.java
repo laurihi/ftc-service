@@ -1,6 +1,6 @@
 package com.github.laurihi.ftc.ftcservice.service;
 
-import com.github.laurihi.ftc.ftcservice.model.DailyActionsWrapper;
+import com.github.laurihi.ftc.ftcservice.model.actions.DailyActionsWrapper;
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge;
 import com.github.laurihi.ftc.ftcservice.persistence.data.Participant;
 import com.github.laurihi.ftc.ftcservice.persistence.data.RatedExercise;

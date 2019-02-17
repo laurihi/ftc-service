@@ -23,7 +23,8 @@ class ChallengeServiceSpec extends FtcSpecification {
     void setup() {
         challenge = createChallengeBuilder.name("Challenge")
                 .startDate(LocalDate.now().minusDays(1))
-                .endDate(LocalDate.now().plusDays(5)).build()
+                .endDate(LocalDate.now().plusDays(5))
+                .exercises([]).build()
     }
 
 

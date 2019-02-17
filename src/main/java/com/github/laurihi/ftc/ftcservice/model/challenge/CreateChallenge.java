@@ -1,15 +1,22 @@
-package com.github.laurihi.ftc.ftcservice.model;
+package com.github.laurihi.ftc.ftcservice.model.challenge;
+
+import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-public class CreateChallengeModel {
+public class CreateChallenge {
+
 
     private String name;
 
+    @ApiModelProperty(value = "The id", position = 1)
     private LocalDate startDate;
+    @ApiModelProperty(value = "The id", position = 2)
     private LocalDate endDate;
-    private List<String> exercises;
+    @ApiModelProperty(value = "The id", position = 3)
+    private List<CreateRatedExercise> exercises = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -35,11 +42,12 @@ public class CreateChallengeModel {
         this.endDate = endDate;
     }
 
-    public List<String> getExercises() {
+
+    public List<CreateRatedExercise> getExercises() {
         return exercises;
     }
 
-    public void setExercises(List<String> exercises) {
+    public void setExercises(List<CreateRatedExercise> exercises) {
         this.exercises = exercises;
     }
 }

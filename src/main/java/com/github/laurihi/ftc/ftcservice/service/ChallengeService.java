@@ -1,8 +1,10 @@
 package com.github.laurihi.ftc.ftcservice.service;
 
-import com.github.laurihi.ftc.ftcservice.model.CreateChallengeModel;
+import com.github.laurihi.ftc.ftcservice.model.challenge.CreateChallenge;
+import com.github.laurihi.ftc.ftcservice.model.challenge.CreateRatedExercise;
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge;
 import com.github.laurihi.ftc.ftcservice.persistence.data.Participant;
+import com.github.laurihi.ftc.ftcservice.persistence.data.RatedExercise;
 import com.github.laurihi.ftc.ftcservice.persistence.repository.ChallengeRepository;
 import com.github.laurihi.ftc.ftcservice.persistence.repository.ParticipantRepository;
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ChallengeService {
@@ -27,30 +30,17 @@ public class ChallengeService {
         this.participantRepository = participantRepository;
     }
 
-    public Challenge create(CreateChallengeModel challenge) {
+    public Challenge create(CreateChallenge challenge) {
 
-        Challenge challengeEntity = new Challenge();
-        challengeEntity.setName(challenge.getName());
-        challengeEntity.setStartDate(challenge.getStartDate());
-        challengeEntity.setEndDate(challenge.getEndDate());
-
-
-        if (doOverlappingChallengesExist(challengeEntity.getStartDate(), challengeEntity.getEndDate())) {
+        if (doOverlappingChallengesExist(challenge.getStartDate(), challenge.getEndDate())) {
             LOG.warn("Trying to create overlapping challenge by name " + challenge.getName());
             throw new RuntimeException();
         }
+
+        Challenge challengeEntity = mapToChallengeEntity(challenge);
         return challengeRepository.save(challengeEntity);
     }
 
-    private boolean doOverlappingChallengesExist(LocalDate start, LocalDate end) {
-
-        List<Challenge> challengesThatEndBeforeCurrentStart = challengeRepository.findByEndDateBefore(start);
-        List<Challenge> challengesThatStartAfterCurrentEnd = challengeRepository.findByStartAfter(end);
-
-        List<Challenge> allChallenges = challengeRepository.findAll();
-
-        return challengesThatEndBeforeCurrentStart.size() + challengesThatStartAfterCurrentEnd.size() != allChallenges.size();
-    }
 
     public Challenge getOngoingChallenge() {
         LocalDate today = LocalDate.now();
@@ -80,12 +70,6 @@ public class ChallengeService {
         return participant;
     }
 
-    private Participant addParticipant(String userHandle) {
-        Participant participant = new Participant();
-        participant.setUserHandle(userHandle);
-        return participantRepository.save(participant);
-    }
-
 
     public Participant getParticipantByUserHandle(String userHandle, Challenge challenge) {
         return challenge.getParticipants().stream()
@@ -93,4 +77,39 @@ public class ChallengeService {
 
     }
 
+    private Challenge mapToChallengeEntity(CreateChallenge challenge) {
+        Challenge challengeEntity = new Challenge();
+        challengeEntity.setName(challenge.getName());
+        challengeEntity.setStartDate(challenge.getStartDate());
+        challengeEntity.setEndDate(challenge.getEndDate());
+        challengeEntity.setExercises(mapToRatedExercises(challenge.getExercises()));
+
+        return challengeEntity;
+    }
+
+    private List<RatedExercise> mapToRatedExercises(List<CreateRatedExercise> exercises) {
+        return exercises.stream().map(exercise -> {
+            RatedExercise result = new RatedExercise();
+            result.setExerciseKey(exercise.getExerciseKey());
+            result.setPointsPerUnit(exercise.getPointsPerUnit());
+            result.setUnit(exercise.getUnit());
+            return result;
+        }).collect(Collectors.toList());
+    }
+
+    private boolean doOverlappingChallengesExist(LocalDate start, LocalDate end) {
+
+        List<Challenge> challengesThatEndBeforeCurrentStart = challengeRepository.findByEndDateBefore(start);
+        List<Challenge> challengesThatStartAfterCurrentEnd = challengeRepository.findByStartAfter(end);
+
+        List<Challenge> allChallenges = challengeRepository.findAll();
+
+        return challengesThatEndBeforeCurrentStart.size() + challengesThatStartAfterCurrentEnd.size() != allChallenges.size();
+    }
+
+    private Participant addParticipant(String userHandle) {
+        Participant participant = new Participant();
+        participant.setUserHandle(userHandle);
+        return participantRepository.save(participant);
+    }
 }
