@@ -1,5 +1,6 @@
 package com.github.laurihi.ftc.ftcservice.controller;
 
+import com.github.laurihi.ftc.ftcservice.model.challenge.ChallengeBase;
 import com.github.laurihi.ftc.ftcservice.model.challenge.CreateChallenge;
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge;
 import com.github.laurihi.ftc.ftcservice.service.ChallengeService;
@@ -7,10 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
@@ -32,4 +30,15 @@ public class ChallengeController {
 
         return challengeService.create(challenge);
     }
+
+    @ApiOperation("Get ongoing challenge")
+    @GetMapping("/ongoing")
+    public ChallengeBase ongoingChallenge(){
+        return challengeService.getOngoingChallenge();
+    }
+
+
+
+
+
 }

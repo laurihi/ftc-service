@@ -29,7 +29,7 @@ public class ActionService {
     public void addDailyActions(DailyActionsWrapper dailyActionsWrapper) {
 
 
-        Challenge ongoingChallenge = challengeService.getOngoingChallenge();
+        Challenge ongoingChallenge = challengeService.getOngoingChallengeEntity();
         List<Action> actions = mapToActions(dailyActionsWrapper, ongoingChallenge);
         actionRepository.saveAll(actions);
 

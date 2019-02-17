@@ -1,5 +1,7 @@
 package com.github.laurihi.ftc.ftcservice.service;
 
+import com.github.laurihi.ftc.ftcservice.model.actions.AvailableExercise;
+import com.github.laurihi.ftc.ftcservice.model.challenge.ChallengeBase;
 import com.github.laurihi.ftc.ftcservice.model.challenge.CreateChallenge;
 import com.github.laurihi.ftc.ftcservice.model.challenge.CreateRatedExercise;
 import com.github.laurihi.ftc.ftcservice.persistence.data.Challenge;
@@ -41,8 +43,20 @@ public class ChallengeService {
         return challengeRepository.save(challengeEntity);
     }
 
+    //TODO: Switch all mapping responsibility to separate mapper classes and use them in controllers
+    public ChallengeBase getOngoingChallenge() {
+        Challenge challengeEntity = getOngoingChallengeEntity();
 
-    public Challenge getOngoingChallenge() {
+        ChallengeBase result = new ChallengeBase();
+        result.setChallengeName(challengeEntity.getName());
+        result.setStartDate(challengeEntity.getStartDate());
+        result.setEndDate(challengeEntity.getEndDate());
+
+        return result;
+    }
+
+
+    public Challenge getOngoingChallengeEntity() {
         LocalDate today = LocalDate.now();
         List<Challenge> ongoing = challengeRepository.findByStartBeforeAndEndAfter(today);
 
@@ -57,7 +71,7 @@ public class ChallengeService {
 
     public Participant joinOngoing(String userHandle) {
 
-        Challenge ongoingChallenge = getOngoingChallenge();
+        Challenge ongoingChallenge = getOngoingChallengeEntity();
 
         if (ongoingChallenge == null) {
             throw new IllegalStateException("No ongoing challenges to join.");
@@ -75,6 +89,22 @@ public class ChallengeService {
         return challenge.getParticipants().stream()
                 .filter(participant -> participant.getUserHandle().equals(userHandle)).findFirst().orElseThrow(IllegalArgumentException::new);
 
+    }
+
+    public List<AvailableExercise> availableExercises() {
+        Challenge ongoingChallenge = getOngoingChallengeEntity();
+        List<RatedExercise> exercises = ongoingChallenge.getExercises();
+        return mapToAvailableExercises(exercises);
+    }
+
+    private List<AvailableExercise> mapToAvailableExercises(List<RatedExercise> exercises) {
+        return exercises.stream().map(ratedExercise -> {
+            AvailableExercise availableExercise = new AvailableExercise();
+            availableExercise.setExerciseKey(ratedExercise.getExerciseKey());
+            availableExercise.setPointsPerUnit(ratedExercise.getPointsPerUnit());
+            availableExercise.setUnit(ratedExercise.getUnit());
+            return availableExercise;
+        }).collect(Collectors.toList());
     }
 
     private Challenge mapToChallengeEntity(CreateChallenge challenge) {
@@ -112,4 +142,6 @@ public class ChallengeService {
         participant.setUserHandle(userHandle);
         return participantRepository.save(participant);
     }
+
+
 }
